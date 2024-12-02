@@ -14,7 +14,9 @@
       "experimentalDecorators": true,
       "sourceMap": true,
       "strictPropertyInitialization": false, 
-      "allowSyntheticDefaultImports": true
+      "allowSyntheticDefaultImports": true,
+      "types": ["jest", "node"]
    },
-   "ts-node": { "transpileOnly": true }
+   "ts-node": { "transpileOnly": true },
+   "include": ["src/**/*.ts", "__tests__/**/*.ts"]
 }

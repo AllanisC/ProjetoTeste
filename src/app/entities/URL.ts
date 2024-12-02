@@ -13,6 +13,9 @@ class URL {
 
     @Column('varchar', {nullable: false})
     shortened_url: string;
+
+    @Column('int', { default: 0 }) 
+    access_count: number; // Contador de acessos
 }
 
 export default URL;

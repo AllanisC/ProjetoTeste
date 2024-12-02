@@ -4,8 +4,7 @@ import "reflect-metadata";
 
 class EncurtadorService {
   async gravar(data: { URL: string, CUSTOM_ALIAS?: string }) {
-    const now = new Date().getTime();
-    const { CUSTOM_ALIAS, URL: originalURL } = data;
+    const { CUSTOM_ALIAS, URL: originalURL } = data;  // Aqui extraímos `originalURL` dos dados recebidos
     const TEMPLATE_URL = "http://shortener/u/";
 
     const repository = AppDataSource.getRepository(URL);
@@ -24,24 +23,30 @@ class EncurtadorService {
 
     const shortenedURL = `${TEMPLATE_URL}${hash}`;
 
+    console.log('Criando URL com:', { originalURL, alias: hash, shortenedURL });
+
     const urlEntity = repository.create({
       original_url: originalURL,
       alias: hash,
       shortened_url: shortenedURL,
+      access_count: 0 // Inicializa o contador de acessos
     });
 
     await repository.save(urlEntity);
 
-    const after = new Date().getTime();
-    const finalTime = `${after - now}ms`;
-
     return {
       alias: hash,
       url: shortenedURL,
-      statistics: {
-        time_taken: finalTime,
-      }
     };
+  }
+
+  async gravarMultiplos(dados: Array<{ URL: string, CUSTOM_ALIAS?: string }>) {
+    const results = [];
+    for (const data of dados) {
+      const result = await this.gravar(data);
+      results.push(result);
+    }
+    return results;
   }
 
   async recuperar(alias: string) {
@@ -52,8 +57,23 @@ class EncurtadorService {
       console.log(`Alias não encontrado: ${alias}`); // Log para depuração
       throw { ERR_CODE: "002", Description: "SHORTENED URL NOT FOUND" };
     }
+    // Incrementa o contador de acessos
+    urlEntity.access_count += 1;
+    await repository.save(urlEntity);
     return urlEntity;
-  }  
+  }
+
+  async getTop10Accessed() {
+    const repository = AppDataSource.getRepository(URL);
+    // Obtém as dez URLs mais acessadas
+    const topUrls = await repository.find({
+      order: {
+        access_count: 'DESC'
+      },
+      take: 10
+    });
+    return topUrls;
+  }
 }
 
 export default EncurtadorService;

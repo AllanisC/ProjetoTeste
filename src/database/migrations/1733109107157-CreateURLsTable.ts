@@ -28,6 +28,11 @@ export class CreateURLsTable1733109107157 implements MigrationInterface {
                         name: 'shortened_url',
                         type: 'varchar',
                         isNullable: false
+                    },
+                    {
+                        name: 'access_count',
+                        type: 'int',
+                        default: 0
                     }
                 ]
             })

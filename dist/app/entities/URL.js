@@ -28,6 +28,10 @@ __decorate([
     (0, typeorm_1.Column)('varchar', { nullable: false }),
     __metadata("design:type", String)
 ], URL.prototype, "shortened_url", void 0);
+__decorate([
+    (0, typeorm_1.Column)('int', { default: 0 }),
+    __metadata("design:type", Number)
+], URL.prototype, "access_count", void 0);
 URL = __decorate([
     (0, typeorm_1.Entity)('urls')
 ], URL);

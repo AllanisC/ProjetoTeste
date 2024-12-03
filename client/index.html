@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Shortener</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>URL Shortener</h1>
+
+    <!-- Formulário para encurtar URL -->
+    <form id="shorten-form">
+      <input type="url" id="url-input" placeholder="Enter URL" required>
+      <input type="text" id="alias-input" placeholder="Enter custom alias (optional)">
+      <button type="submit">Shorten URL</button>
+    </form>
+    <div id="shortened-url"></div>
+
+    <!-- Formulário para recuperar URL original -->
+    <h2>Retrieve Original URL</h2>
+    <form id="retrieve-form">
+      <input type="text" id="retrieve-input" placeholder="Enter alias" required>
+      <button type="submit">Retrieve URL</button>
+    </form>
+    <div id="original-url"></div>
+
+    <!-- Lista das dez URLs mais acessadas -->
+    <h2>Top 10 Accessed URLs</h2>
+    <ul id="top-accessed"></ul>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

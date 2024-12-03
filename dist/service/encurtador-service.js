@@ -8,7 +8,8 @@ const URL_1 = __importDefault(require("../app/entities/URL"));
 require("reflect-metadata");
 class EncurtadorService {
     async gravar(data) {
-        const { CUSTOM_ALIAS, URL: originalURL } = data; // Aqui extraímos `originalURL` dos dados recebidos
+        var now = new Date().getTime();
+        const { CUSTOM_ALIAS, URL: originalURL } = data;
         const TEMPLATE_URL = "http://shortener/u/";
         const repository = data_source_1.AppDataSource.getRepository(URL_1.default);
         let hash = '';
@@ -28,12 +29,17 @@ class EncurtadorService {
             original_url: originalURL,
             alias: hash,
             shortened_url: shortenedURL,
-            access_count: 0 // Inicializa o contador de acessos
+            access_count: 0
         });
         await repository.save(urlEntity);
+        var after = new Date().getTime();
+        var finalTime = `${after - now}ms`;
         return {
             alias: hash,
             url: shortenedURL,
+            statistics: {
+                time_taken: finalTime,
+            }
         };
     }
     async gravarMultiplos(dados) {
@@ -46,20 +52,18 @@ class EncurtadorService {
     }
     async recuperar(alias) {
         const repository = data_source_1.AppDataSource.getRepository(URL_1.default);
-        console.log(`Buscando alias: ${alias}`); // Log para depuração
+        console.log(`Buscando alias: ${alias}`);
         const urlEntity = await repository.findOneBy({ alias });
         if (!urlEntity) {
-            console.log(`Alias não encontrado: ${alias}`); // Log para depuração
+            console.log(`Alias não encontrado: ${alias}`);
             throw { ERR_CODE: "002", Description: "SHORTENED URL NOT FOUND" };
         }
-        // Incrementa o contador de acessos
         urlEntity.access_count += 1;
         await repository.save(urlEntity);
         return urlEntity;
     }
     async getTop10Accessed() {
         const repository = data_source_1.AppDataSource.getRepository(URL_1.default);
-        // Obtém as dez URLs mais acessadas
         const topUrls = await repository.find({
             order: {
                 access_count: 'DESC'

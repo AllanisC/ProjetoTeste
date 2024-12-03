@@ -15,7 +15,7 @@ class URL {
     shortened_url: string;
 
     @Column('int', { default: 0 }) 
-    access_count: number; // Contador de acessos
+    access_count: number;
 }
 
 export default URL;

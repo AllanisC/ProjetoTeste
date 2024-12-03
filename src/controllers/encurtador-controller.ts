@@ -17,15 +17,14 @@ class EncurtadorController {
   async recuperar(req: Request, res: Response): Promise<any> {
     try {
       const urlEntity = await encurtadorService.recuperar(req.params.alias);
-      console.log(`Redirecionando para: ${urlEntity.original_url}`); // Log para depuração
+      console.log(`Redirecionando para: ${urlEntity.original_url}`);
       let redirectUrl = urlEntity.original_url;
 
-      // Adiciona protocolo 'http://' se não estiver presente na URL original
       if (!/^https?:\/\//i.test(redirectUrl)) {
         redirectUrl = `http://${redirectUrl}`;
       }
 
-      return res.redirect(301, redirectUrl); // Redirecionamento 301 (permanente)
+      return res.redirect(301, redirectUrl);
     } catch (error) {
       return res.status(404).json(error);
     }

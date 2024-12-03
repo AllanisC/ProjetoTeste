@@ -7,7 +7,7 @@ import { AppDataSource } from "../../database/data-source";
 const URLsRepository = AppDataSource.getRepository(URL);
 
 const getURLs = (): Promise<IURLs[]> => {
-    return URLsRepository.find(); //select * from
+    return URLsRepository.find();
 }
 
 export default { getURLs };

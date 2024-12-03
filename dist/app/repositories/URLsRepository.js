@@ -8,7 +8,7 @@ const URL_1 = __importDefault(require("../entities/URL"));
 const data_source_1 = require("../../database/data-source");
 const URLsRepository = data_source_1.AppDataSource.getRepository(URL_1.default);
 const getURLs = () => {
-    return URLsRepository.find(); //select * from
+    return URLsRepository.find();
 };
 exports.default = { getURLs };
 //# sourceMappingURL=URLsRepository.js.map
